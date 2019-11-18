@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">VisionWorks</string>
+
+    <!-- SignIn-->
+    <string name="signInToEyecarelive">Welcome, \nsign in to continue \nto EyecareLive.</string>
+    <string name="signInToEyeExam">Welcome, \nsign in to your \nEye Exam</string>
+    <string name="tele_medicine">telemedicine for\neye care</string>
+    <string name="ok">OK</string>
+    <string name="errorCode">Error Occur : </string>
+    <string name="error">Alert</string>
+    <string name="enterEmail">Please enter email address</string>
+    <string name="enterPassword">Please enter password</string>
+    <string name="passLength">Enter Password 8 to 20 Characters Long</string>
+    <string name="pleaseWait">Please wait...</string>
+    <string name="alert">Alert</string>
+    <string name="noInternetAvailable">No Internet Connection Available.</string>
+    <string name="done">Done</string>
+
+    <!-- ******FCM********** -->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <string name="permissionNeeded">Permissions Needed</string>
+    <string name="allUsPermission">We are not able to connect you, you denied some important permissions.\n you can give us those permission by going to \n\nSetting->App->Eyecarelive->Permissions</string>
+    <string name="thanksForTrusting">Thanks for trusting your eye to us! \nPlease wait, doctor will see you in few minutes...</string>
+
+    <string name="msg">Message</string>
+    <string name="eyecare">VisionWorks</string>
+    <string name="connectingCall">Please wait... \n We are connecting your call.</string>
+    <string name="tryAgain">We are unable to process now, Please try again after some minutes.</string>
+    <string name="message">Message</string>
+    <string name="someIssueWithServer">It seems to be some issue with the server at the moment, Please try again later.</string>
+    <string name="sessionExpires">Session expired, please login again.</string>
+    <string name="pleaseTryAgainLater"> Please try again later.</string>
+    <string name="wrongMethodCall"> Wrong Method Call.</string>
+</resources>

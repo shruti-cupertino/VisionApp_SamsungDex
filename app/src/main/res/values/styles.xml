@@ -1,0 +1,135 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+    </style>
+
+    <style name="View13">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1.2dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:listDivider">@color/greyDarkLine</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="bannerImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginTop">28dp</item>
+    </style>
+
+    <!-- ********* Alert dialog style with background white ******* -->
+    <style name="alertBgWhite">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:background">@drawable/rounded_dialog_ok_bg_white</item>
+    </style>
+
+    <style name="match_wrapLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="View11">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="okDialogTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/dialogText</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="okDialogMessage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/dialogText</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+
+    <style name="okDialogButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/dialogText</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="topLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">140dp</item>
+        <item name="android:background">@drawable/two_color_dashboard</item>
+    </style>
+
+    <style name="imageView20">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">25dp</item>
+    </style>
+
+    <style name="headerBackArrow">
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:background">@mipmap/back_icon</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginTop">25dp</item>
+    </style>
+
+    <style name="headerText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_marginTop">23dp</item>
+    </style>
+
+    <style name="matchLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="View8">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/light_gray</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="View18">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
+
+    <style name="dialogButtonBGWhite">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/dashboardDarkBlue</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+</resources>

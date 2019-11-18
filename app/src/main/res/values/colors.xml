@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#004986</color>
+    <color name="colorPrimaryDark">#FFFFFFFF</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="greyTextLogin">#3d4654</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="dialogBgColor">#D7F3F8</color>
+    <color name="greyLine">#E5E5E5</color>
+    <color name="greyDarkLine">#88898b</color>
+    <color name="lightBlue">#258DF9</color>
+    <color name="greyColor">#EBEBEB</color>
+    <color name="dashboardDarkBlue">#0061BF</color>
+    <color name="dashboardLightBlue">#0098FF</color>
+    <color name="dialogText">#EBF6FD</color>
+    <color name="myAccountText">#0080FF</color>
+    <color name="greyText">#303030</color>
+    <color name="greyWithAlpha">#30303030</color>
+    <color name="greyLight">#DCDCDC</color>
+    <color name="textColorBlue">#0081ff</color>
+    <color name="leftChatColor">#D1D6DC</color>
+    <color name="rightChatColor">#0096F8</color>
+    <!--<color name="">#F3D800</color>-->
+    <color name="black">#000000</color>
+    <color name="light_gray">#D6D6D6</color>
+</resources>

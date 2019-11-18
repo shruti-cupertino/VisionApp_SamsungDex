@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "89322138702",
+    "firebase_url": "https://cooldoctors-b230f.firebaseio.com",
+    "project_id": "cooldoctors-b230f",
+    "storage_bucket": "cooldoctors-b230f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89322138702:android:c09bc1f3b547747e",
+        "android_client_info": {
+          "package_name": "com.cooldoctors.cdeye"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89322138702-1muoqu8eigeuhjgc0b4umj4737h0oep0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa1FBzS1RhnWvAQOFxjjhDsQzCV7qEHLQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

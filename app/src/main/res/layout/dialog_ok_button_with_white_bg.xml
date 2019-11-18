@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        tools:text="Title"
+        android:id="@+id/tvDialogTitle"
+        style="@style/okDialogTitle"
+        android:textColor="@color/black"
+        android:fontFamily="@font/helvetica_neue65"/>
+
+    <LinearLayout
+        style="@style/match_wrapLayout"
+        android:layout_below="@id/tvDialogTitle"
+        android:orientation="vertical">
+
+        <TextView
+            android:fontFamily="@font/helvetica_neue55"
+            android:id="@+id/tvDialogMessage"
+            style="@style/okDialogMessage"
+            android:textColor="@color/black"
+            android:lineSpacingMultiplier="1.3"
+            />
+
+        <View style="@style/View11"
+            android:background="@color/greyLight"/>
+
+        <TextView
+            android:fontFamily="@font/helvetica_neue65"
+            android:id="@+id/tvOk"
+            style="@style/okDialogButton"
+            android:text="@string/ok"
+            android:textColor="@color/dashboardDarkBlue"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

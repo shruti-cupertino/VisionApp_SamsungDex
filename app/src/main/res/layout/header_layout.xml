@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/topLinearLayout"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivMenuIcon1"
+            style="@style/imageView20"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:padding="10dp"
+            android:background="@mipmap/menu"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/ivBackArrow1"
+            style="@style/headerBackArrow" />
+
+        <TextView
+            android:id="@+id/tvHeader1"
+            style="@style/headerText"
+            android:text="My Account" />
+
+
+        <!--<com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+            android:id="@+id/tvPercentage1"
+            style="@style/tvHeaderPercentage"
+            android:layout_below="@id/tvHeader1"
+            android:text="25% Complete"
+            android:visibility="visible" />
+
+        <com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+            android:id="@+id/tvNeedHelp1"
+            style="@style/headerNeedHelpText"
+            android:visibility="visible" />-->
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/topLinearLayout"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clHeaderHelp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/ivMenuIcon"
+            style="@style/imageView20"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/menu"
+            android:layout_marginStart="25dp"
+            app:layout_goneMarginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible" />
+
+            <!--<com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+                android:id="@+id/tvNeedHelp"
+                style="@style/headerNeedHelpText"
+                android:visibility="invisible"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clHeaderHelp">
+
+            <ImageView
+                android:id="@+id/ivBackArrow"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:padding="4dp"
+                android:src="@mipmap/back_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/helvetica_neue65"
+                android:padding="4dp"
+                android:text="My Account"
+                android:textColor="@color/colorWhite"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--<Button
+                android:id="@+id/btnDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="@string/done"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tvHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvHeader"
+                app:layout_constraintTop_toTopOf="@+id/tvHeader" />
+
+            <com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+                android:id="@+id/tvPercentage"
+                style="@style/tvHeaderPercentage"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="25% Complete"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeader" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/wrapLayout"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/topLinearLayout"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivMenuIcon"
+            style="@style/imageView20"
+            android:layout_marginLeft="@dimen/dimen15"
+            android:layout_marginTop="@dimen/dimen5"
+            android:background="@mipmap/menu"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ivBackArrow"
+            style="@style/headerBackArrow" />
+
+        <TextView
+            android:id="@+id/tvHeader"
+            style="@style/headerText"
+            android:text="My Account" />
+
+
+        <com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+            android:id="@+id/tvPercentage"
+            style="@style/tvHeaderPercentage"
+            android:layout_below="@id/tvHeader"
+            android:text="25% Complete"
+            android:visibility="invisible" />
+
+        <com.cooldoctors.cdeye.custom_views.TextViewHelvetica55
+            android:id="@+id/tvNeedHelp"
+            style="@style/headerNeedHelpText"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>-->
