@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    tools:context=".activities.MainActivity">
 
     <include
         android:id="@+id/header"
@@ -58,6 +58,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
                 app:layout_constraintVertical_bias="0.3" />
+
+            <include
+                android:id="@+id/callingScreen"
+                layout="@layout/twilio_video_call"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

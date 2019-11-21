@@ -3,8 +3,10 @@ package com.cooldoctors.cdeye.twilio;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
@@ -12,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,6 +35,7 @@ import com.cooldoctors.cdeye.R;
 import com.cooldoctors.cdeye.constants.SharedPreference;
 import com.cooldoctors.cdeye.constants.UtilClass;
 import com.cooldoctors.cdeye.services.FireBaseMessagingService;
+import com.google.android.material.appbar.AppBarLayout;
 import com.twilio.video.CameraCapturer;
 import com.twilio.video.ConnectOptions;
 import com.twilio.video.LocalAudioTrack;
@@ -81,11 +85,13 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
     TextView tvStatus;
     Context context;
     Room room;
+    ImageView imageView;
+    TextView tvMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.twilio_video_call);
+        setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
 
         context = this;
@@ -113,7 +119,13 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         previousAudioMode = audioManager.getMode();
 
-        llTwilio = (LinearLayout) findViewById(R.id.llTwilio);
+        llTwilio = (LinearLayout) findViewById(R.id.callingScreen);
+        imageView = findViewById(R.id.imageView);
+        tvMessage = findViewById(R.id.tvMessage);
+
+        llTwilio.setVisibility(View.VISIBLE);
+        imageView.setVisibility(View.GONE);
+        tvMessage.setVisibility(View.GONE);
 
         roomName = sharedPreference.getData(SharedPreference.twilioRoomName);
         twilioToken = sharedPreference.getData(SharedPreference.twilioToken);
@@ -157,10 +169,12 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                     setDisconnectAction();
                     FireBaseMessagingService.isUserOnCall = false;
                     Toast.makeText(context, "Call hanged up", Toast.LENGTH_SHORT).show();
+                    llTwilio.setVisibility(View.GONE);
                     TwilioMainActivity.this.finish();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Log.d(TAG, "ivHangUp Exception         " + ex.toString());
+                    okButtonDialog(context, "Alert", ex.toString());
                     Toast.makeText(context, "Exception in call hangup >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -207,38 +221,59 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onConnected(@NonNull Room room) {
-                Log.d(TAG, "Room.Listener onConnected2");
-                // Get the first participant from the room
-                if (room.getRemoteParticipants() != null && room.getRemoteParticipants().size() > 0) {
-                    RemoteParticipant participant = room.getRemoteParticipants().get(0);
-                    Log.i(TAG, "HandleParticipants         " + participant.getIdentity() + " is in the room.");
-                    Toast.makeText(TwilioMainActivity.this, "OnConnected in room", Toast.LENGTH_SHORT).show();
-                    for (RemoteParticipant remoteParticipant : room.getRemoteParticipants()) {
-                        remoteParticipant.setListener(remoteParticipantListener());
+                try {
+
+                    Log.d(TAG, "Room.Listener onConnected2");
+                    // Get the first participant from the room
+                    if (room.getRemoteParticipants() != null && room.getRemoteParticipants().size() > 0) {
+                        RemoteParticipant participant = room.getRemoteParticipants().get(0);
+                        Log.i(TAG, "HandleParticipants         " + participant.getIdentity() + " is in the room.");
+                        Toast.makeText(TwilioMainActivity.this, "OnConnected in room", Toast.LENGTH_SHORT).show();
+                        for (RemoteParticipant remoteParticipant : room.getRemoteParticipants()) {
+                            remoteParticipant.setListener(remoteParticipantListener());
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
                 }
 
             }
 
             @Override
             public void onConnectFailure(@NonNull Room room, @NonNull TwilioException twilioException) {
-                tvStatus.setText("Failed to connect room");
-                Log.d(TAG, "onConnectFailure");
-                Toast.makeText(TwilioMainActivity.this, "onConnectFailure", Toast.LENGTH_SHORT).show();
-                configureAudio(false);
+                try {
+                    tvStatus.setText("Failed to connect room");
+                    Log.d(TAG, "onConnectFailure");
+                    Toast.makeText(TwilioMainActivity.this, "onConnectFailure", Toast.LENGTH_SHORT).show();
+                    configureAudio(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
             }
 
             @Override
             public void onReconnecting(@NonNull Room room, @NonNull TwilioException twilioException) {
-                Log.d(TAG, "Room.Listener onReconnecting     " + room);
-                Toast.makeText(TwilioMainActivity.this, "on Reconnecting room", Toast.LENGTH_SHORT).show();
+                try {
+                    Log.d(TAG, "Room.Listener onReconnecting     " + room);
+                    Toast.makeText(TwilioMainActivity.this, "on Reconnecting room", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
 
             }
 
             @Override
             public void onReconnected(@NonNull Room room) {
-                Log.d(TAG, "Room.Listener onReconnected     " + room);
-                Toast.makeText(TwilioMainActivity.this, "on Reconnected room", Toast.LENGTH_SHORT).show();
+                try {
+                    Log.d(TAG, "Room.Listener onReconnected     " + room);
+                    Toast.makeText(TwilioMainActivity.this, "on Reconnected room", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
 
             }
 
@@ -277,48 +312,73 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Log.d(TAG, " Exception         " + ex.toString());
+                    okButtonDialog(context, "Alert", ex.toString());
                     Toast.makeText(TwilioMainActivity.this, "Error in disconnecting >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onParticipantConnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
-                Log.d(TAG, "Room.Listener onParticipantConnected getName       " + room.getName());
-                Log.d(TAG, "Room.Listener onParticipantConnected getRemoteVideoTracks       " + remoteParticipant.getRemoteVideoTracks());
-                Toast.makeText(TwilioMainActivity.this, "onParticipantConnected", Toast.LENGTH_SHORT).show();
-                remoteParticipant.setListener(remoteParticipantListener());
+                try {
+                    Log.d(TAG, "Room.Listener onParticipantConnected getName       " + room.getName());
+                    Log.d(TAG, "Room.Listener onParticipantConnected getRemoteVideoTracks       " + remoteParticipant.getRemoteVideoTracks());
+                    Toast.makeText(TwilioMainActivity.this, "onParticipantConnected", Toast.LENGTH_SHORT).show();
+                    remoteParticipant.setListener(remoteParticipantListener());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
             }
 
             @Override
             public void onParticipantDisconnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
-                Log.d(TAG, "Room.Listener onParticipantDisconnected getName       " + room.getName());
-                Log.d(TAG, "Room.Listener onParticipantDisconnected getRemoteVideoTracks       " + remoteParticipant.getRemoteVideoTracks());
+                try {
+                    Log.d(TAG, "Room.Listener onParticipantDisconnected getName       " + room.getName());
+                    Log.d(TAG, "Room.Listener onParticipantDisconnected getRemoteVideoTracks       " + remoteParticipant.getRemoteVideoTracks());
 //                removeParticipant(remoteParticipant);
-                Log.d(TAG, "onParticipantDisconnected");
-                Toast.makeText(TwilioMainActivity.this, "onParticipantDisconnected", Toast.LENGTH_SHORT).show();
-                hangUpAction(true);
+                    Log.d(TAG, "onParticipantDisconnected");
+                    Toast.makeText(TwilioMainActivity.this, "onParticipantDisconnected", Toast.LENGTH_SHORT).show();
+                    hangUpAction(true);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
             }
 
             @Override
             public void onRecordingStarted(@NonNull Room room) {
-                Toast.makeText(TwilioMainActivity.this, "onRecording Started", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Room.Listener onRecordingStarted          " + room);
+                try {
+                    Toast.makeText(TwilioMainActivity.this, "onRecording Started", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Room.Listener onRecordingStarted          " + room);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
+                }
 
             }
 
             @Override
             public void onRecordingStopped(@NonNull Room room) {
-                Log.d(TAG, "Room.Listener onRecordingStopped      " + room);
-                Toast.makeText(TwilioMainActivity.this, "onRecordingStopped", Toast.LENGTH_SHORT).show();
+                try {
+                    Log.d(TAG, "Room.Listener onRecordingStopped      " + room);
+                    Toast.makeText(TwilioMainActivity.this, "onRecordingStopped", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    okButtonDialog(context, "Alert", e.toString());
+                }
 
             }
         });
 
         //Log.d(TAG, "connectToRoom localParticipant " + localParticipant);
         if (localParticipant != null) {
-            Log.d(TAG, "Room.Listener createAudioAndVideoTracks publishTrack          " + localVideoTrack);
-            Toast.makeText(this, "Audio and Video tracks created", Toast.LENGTH_SHORT).show();
-            localParticipant.publishTrack(localVideoTrack);
+            try {
+                Log.d(TAG, "Room.Listener createAudioAndVideoTracks publishTrack          " + localVideoTrack);
+                Toast.makeText(this, "Audio and Video tracks created", Toast.LENGTH_SHORT).show();
+                localParticipant.publishTrack(localVideoTrack);
+            } catch (Exception e){
+                e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
+            }
         }
     }
 
@@ -451,6 +511,7 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
             audioManager.setSpeakerphoneOn(true);
         } catch (Exception e) {
             e.printStackTrace();
+            okButtonDialog(context, "Alert", e.toString());
             Toast.makeText(context, "Error in setting audio to normal >> " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -479,6 +540,7 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                 audioManager.setSpeakerphoneOn(true);
             } catch (Exception e) {
                 e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
                 Toast.makeText(context, "Error in audio configuration >> " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             previousMicrophoneMute = audioManager.isMicrophoneMute();
@@ -498,13 +560,18 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
 
     private void setDisconnectAction() {
         if (room != null) {
-            setNormalAudio();
-            room.disconnect();
-            room.disconnect();
-            room.disconnect();
-            room.disconnect();
-            Log.d(TAG, "Disconnected room ");
-            Toast.makeText(context, "Disconnected from room", Toast.LENGTH_SHORT).show();
+            try {
+                setNormalAudio();
+                room.disconnect();
+                room.disconnect();
+                room.disconnect();
+                room.disconnect();
+                Log.d(TAG, "Disconnected room ");
+                Toast.makeText(context, "Disconnected from room", Toast.LENGTH_SHORT).show();
+            } catch (Exception e){
+                e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
+            }
         }
     }
 
@@ -522,27 +589,38 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
             finish();
         } catch (Exception ex) {
             ex.printStackTrace();
+            okButtonDialog(context, "Alert", ex.toString());
             Toast.makeText(context, "Error in call hangup >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void addParticipant2(RemoteVideoTrack remoteVideoTrack) {
-        primaryVideoView.setMirror(false);
-        remoteVideoTrack.addRenderer(primaryVideoView);
-        tempVideoTrack = remoteVideoTrack;
+        try {
+            primaryVideoView.setMirror(false);
+            remoteVideoTrack.addRenderer(primaryVideoView);
+            tempVideoTrack = remoteVideoTrack;
+        } catch (Exception e){
+            e.printStackTrace();
+            okButtonDialog(context, "Alert", e.toString());
+        }
     }
 
     private void moveLocalVideoToPrimaryView() {
-        if (localVideoView.getVisibility() == View.VISIBLE) {
-            localVideoView.setVisibility(View.GONE);
-            if (localVideoTrack != null) {
-                localVideoTrack.removeRenderer(primaryVideoView);
-                localVideoTrack.addRenderer(localVideoView);
+        try {
+            if (localVideoView.getVisibility() == View.VISIBLE) {
+                localVideoView.setVisibility(View.GONE);
+                if (localVideoTrack != null) {
+                    localVideoTrack.removeRenderer(primaryVideoView);
+                    localVideoTrack.addRenderer(localVideoView);
+                }
+                localVideoViewRenderer = primaryVideoView;
+                primaryVideoView.setMirror(cameraCapturer.getCameraSource() ==
+                        CameraCapturer.CameraSource.FRONT_CAMERA);
+                Toast.makeText(context, "Local video...", Toast.LENGTH_SHORT).show();
             }
-            localVideoViewRenderer = primaryVideoView;
-            primaryVideoView.setMirror(cameraCapturer.getCameraSource() ==
-                    CameraCapturer.CameraSource.FRONT_CAMERA);
-            Toast.makeText(context, "Local video...", Toast.LENGTH_SHORT).show();
+        } catch (Exception e){
+            e.printStackTrace();
+            okButtonDialog(context, "Alert", e.toString());
         }
     }
 
@@ -554,9 +632,14 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
          */
         //Log.d(TAG, "onDestroy");
         if (room != null && room.getState() != Room.State.DISCONNECTED) {
-            room.disconnect();
-            disconnectedFromOnDestroy = true;
-            Toast.makeText(context, "OnDestroy room disconnected", Toast.LENGTH_SHORT).show();
+            try {
+                room.disconnect();
+                disconnectedFromOnDestroy = true;
+                Toast.makeText(context, "OnDestroy room disconnected", Toast.LENGTH_SHORT).show();
+            } catch (Exception e){
+                e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
+            }
         }
 
         /*
@@ -564,14 +647,24 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
          * or video is freed.
          */
         if (localAudioTrack != null) {
-            localAudioTrack.release();
-            Toast.makeText(context, "onDestroy audio track released", Toast.LENGTH_SHORT).show();
-            localAudioTrack = null;
+            try {
+                localAudioTrack.release();
+                Toast.makeText(context, "onDestroy audio track released", Toast.LENGTH_SHORT).show();
+                localAudioTrack = null;
+            } catch (Exception e){
+                e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
+            }
         }
         if (localVideoTrack != null) {
-            localVideoTrack.release();
-            Toast.makeText(context, "onDestroy video track released", Toast.LENGTH_SHORT).show();
-            localVideoTrack = null;
+            try {
+                localVideoTrack.release();
+                Toast.makeText(context, "onDestroy video track released", Toast.LENGTH_SHORT).show();
+                localVideoTrack = null;
+            } catch (Exception e){
+                e.printStackTrace();
+                okButtonDialog(context, "Alert", e.toString());
+            }
         }
 
         super.onDestroy();
@@ -624,7 +717,8 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
         } catch (Exception e) {
             Log.d(TAG, "createAudioAndVideoTracks e         " + e);
             e.printStackTrace();
-            Toast.makeText(context, "Error in creating audio/video tracks >> "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            okButtonDialog(context, "Alert", e.toString());
+            Toast.makeText(context, "Error in creating audio/video tracks >> " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -634,6 +728,8 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
             return ((CameraManager) getSystemService(Context.CAMERA_SERVICE)).getCameraIdList().length;
         } catch (CameraAccessException e) {
             //Log.e(TAG, "CameraAccessException", e);
+            e.printStackTrace();
+            okButtonDialog(context, "Alert", e.toString());
         }
         return android.hardware.Camera.getNumberOfCameras();
     }
@@ -701,6 +797,7 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    okButtonDialog(context, "Alert", ex.toString());
                     Toast.makeText(context, "Error in camera switch >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -738,6 +835,7 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    okButtonDialog(context, "Alert", ex.toString());
                     Toast.makeText(context, "Error in view switch >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -761,4 +859,41 @@ public class TwilioMainActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+
+    public void okButtonDialog(final Context context, String title, final String message) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_ok_button_with_white_bg);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+
+        TextView tvDialogTitle = (TextView) dialog.findViewById(R.id.tvDialogTitle);
+        TextView tvDialogMessage = (TextView) dialog.findViewById(R.id.tvDialogMessage);
+        TextView tvOk = (TextView) dialog.findViewById(R.id.tvOk);
+
+        tvDialogTitle.setText("Alert");
+
+        if (message.contains(context.getResources().getString(R.string.errorCode))) {
+            tvDialogMessage.setText(message.substring(13, message.length()));
+        } else
+            tvDialogMessage.setText(message);
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (message.equals("Error Occur :Session expired, please login again.")) {
+                    // doLogout(context);
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
 }

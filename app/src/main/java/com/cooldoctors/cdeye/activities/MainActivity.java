@@ -22,6 +22,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cooldoctors.cdeye.R;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements RegisterFCMToken.
     Context context;
     KProgressHUD hud;
 
+    LinearLayout llTwilio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements RegisterFCMToken.
         tvHeader = findViewById(R.id.tvHeader);
         ivMenuIcon = findViewById(R.id.ivMenuIcon);
         ivBackArrow = findViewById(R.id.ivBackArrow);
+        llTwilio = findViewById(R.id.callingScreen);
 
         ivMenuIcon.setVisibility(View.VISIBLE);
         ivBackArrow.setVisibility(View.GONE);
+        llTwilio.setVisibility(View.GONE);
         tvHeader.setText("Dashboard");
 
         context = this;

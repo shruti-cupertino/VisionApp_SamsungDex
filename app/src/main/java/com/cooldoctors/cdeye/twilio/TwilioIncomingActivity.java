@@ -2,6 +2,7 @@ package com.cooldoctors.cdeye.twilio;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.cooldoctors.cdeye.R;
 import com.cooldoctors.cdeye.constants.SharedPreference;
 import com.cooldoctors.cdeye.constants.UtilClass;
 import com.cooldoctors.cdeye.services.FireBaseMessagingService;
+import com.google.android.material.appbar.AppBarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -98,6 +101,10 @@ public class TwilioIncomingActivity extends AppCompatActivity implements View.On
         mIntentFilter.addAction("com.cooldoctors.actioncall.close");
         mIntentFilter.addAction(AudioManager.RINGER_MODE_CHANGED_ACTION);
         localBroadcastManager.registerReceiver(closeTCallBroadReceiver, mIntentFilter);
+
+        Handler h = new Handler();
+        long delayInMilliSeconds = 35000;
+        h.postDelayed(() -> ivDeclineCall.performClick(), delayInMilliSeconds);
     }
 
     BroadcastReceiver closeTCallBroadReceiver = new BroadcastReceiver() {
@@ -151,27 +158,32 @@ public class TwilioIncomingActivity extends AppCompatActivity implements View.On
                     finish();
                 } catch (Exception e) {
                     Log.d(TAG, "Exception ivAcceptCall        " + e);
+                    okButtonDialog(context, "Alert", e.toString());
                 }
                 break;
 
             case R.id.ivDeclineCall:
-
-                FireBaseMessagingService.stopRingtone();
-                sharedPreference.saveData(SharedPreference.doctorTwilioName, "");
-                sharedPreference.saveData(SharedPreference.docURL, "");
-                sharedPreference.saveData(SharedPreference.docMessage, "");
-                if (FireBaseMessagingService.notificationManager != null)
-                    FireBaseMessagingService.notificationManager.cancel(101);
-                if (closeTCallBroadReceiver != null)
-                    unregisterReceiver(closeTCallBroadReceiver);
-                //Log.i(TAG, "NotificationService2.callRingHandler.purge()");
-                FireBaseMessagingService.isUserOnCall = false;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    this.finishAndRemoveTask();
+                try {
+                    FireBaseMessagingService.stopRingtone();
+                    sharedPreference.saveData(SharedPreference.doctorTwilioName, "");
+                    sharedPreference.saveData(SharedPreference.docURL, "");
+                    sharedPreference.saveData(SharedPreference.docMessage, "");
+                    if (FireBaseMessagingService.notificationManager != null)
+                        FireBaseMessagingService.notificationManager.cancel(101);
+                    if (closeTCallBroadReceiver != null)
+                        unregisterReceiver(closeTCallBroadReceiver);
+                    //Log.i(TAG, "NotificationService2.callRingHandler.purge()");
+                    FireBaseMessagingService.isUserOnCall = false;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        this.finishAndRemoveTask();
+                    }
+                    FireBaseMessagingService.ringtone = null;
+                    Toast.makeText(context, "Call Declined", Toast.LENGTH_SHORT).show();
+                    this.finishAffinity();
+                } catch (Exception e){
+                    e.printStackTrace();
+                    okButtonDialog(context, "Alert", e.toString());
                 }
-                FireBaseMessagingService.ringtone = null;
-                Toast.makeText(context, "Call Declined", Toast.LENGTH_SHORT).show();
-                this.finishAffinity();
                 break;
         }
     }
@@ -186,6 +198,43 @@ public class TwilioIncomingActivity extends AppCompatActivity implements View.On
 //            localBroadcastManager.unregisterReceiver(localBroadcastManager);
         } catch (Exception e) {
             Log.d(TAG, "onDestroy()Exception    " + e);
+            okButtonDialog(context, "Alert", e.toString());
         }
+    }
+
+    public void okButtonDialog(final Context context, String title, final String message) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_ok_button_with_white_bg);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+
+        TextView tvDialogTitle = (TextView) dialog.findViewById(R.id.tvDialogTitle);
+        TextView tvDialogMessage = (TextView) dialog.findViewById(R.id.tvDialogMessage);
+        TextView tvOk = (TextView) dialog.findViewById(R.id.tvOk);
+
+        tvDialogTitle.setText("Alert");
+
+        if (message.contains(context.getResources().getString(R.string.errorCode))) {
+            tvDialogMessage.setText(message.substring(13, message.length()));
+        } else
+            tvDialogMessage.setText(message);
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (message.equals("Error Occur :Session expired, please login again.")) {
+                    // doLogout(context);
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
     }
 }
